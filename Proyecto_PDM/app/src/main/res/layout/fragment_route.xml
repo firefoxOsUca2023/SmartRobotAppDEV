@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RouteFragment"
+    style="@style/backgroundTheme">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_to_previus_routeFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nullGap"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/btnColor"
+            android:clickable="true"
+            android:contentDescription="Back to controller"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:background="@color/txtColor"
+            style="@style/buttonColor"
+            app:borderWidth="@dimen/borderWidthBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_deleteRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nullGap"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/btnColor"
+            android:clickable="true"
+            android:contentDescription="Delete route"
+            android:src="@drawable/baseline_delete_24"
+            app:background="@color/txtColor"
+            style="@style/buttonColor"
+            app:borderWidth="@dimen/borderWidthBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.example.zacatales.smartrobotapp.view.RouteView
+                    android:id="@+id/routeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewNameAppController"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.096" />
+
+            </HorizontalScrollView>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textViewNameAppController"
+            android:layout_width="@dimen/nullGap"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginsGapAppName"
+            android:layout_marginEnd="@dimen/marginsGapAppName"
+            android:layout_marginBottom="@dimen/maxGap"
+            android:gravity="center"
+            android:text="@string/NameApp"
+            style="@style/textColor"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

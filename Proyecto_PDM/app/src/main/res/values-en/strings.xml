@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Robot App</string>
+    <string name="textEjem">ADVERTISING</string>
+    <string name="actionMoveToControllers">Add movie</string>
+    <string name="actionMoveToBluetooth">Add movie</string>
+    <string name="NameApp">Smart Robot App</string>
+    <string name="textTitleBluetooth">List of devices</string>
+    <string name="AjustSpeed">Adjusts the trolley speed</string>
+    <string name="Speed">Low Speed</string>
+    <string name="name_bluetoothDevice">Name</string>
+    <string name="status_device" >Connected </string>
+    <string name="errConecction">Error could not connect</string>
+    <string name="errrOuput">Error could not get outputStream</string>
+    <string name="activityRequired">The activity must implement the interface BluetoothControlListener</string>
+    <string name="notSupportBt">Device does not support Bluetooth</string>
+    <string name="connectSucessful">Bluetooth successfully connected</string>
+    <string name="No">No</string>
+    <string name="yes">Yes</string>
+    <string name="deleteTour">Are you sure you want to delete your trip history?</string>
+    <string name="textTitleMain">Synchronize your device and control your smart car</string>
+    <string name="notRout">No Tour</string>
+</resources>
