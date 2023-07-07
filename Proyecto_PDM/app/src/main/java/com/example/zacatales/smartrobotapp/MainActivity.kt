@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothConnectionListener
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothStateListener
+import com.example.zacatales.smartrobotapp.bluetooth.model.PairedDevicesInfo
 import com.example.zacatales.smartrobotapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothStateListener {
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
     private val hideNavigationBarDelayMillis: Long = 2500
     private val handler = Handler()
     private val hideNavigationBarRunnable = Runnable { hideNavigationBar() }
+
 
     override fun onResume() {
         super.onResume()
@@ -95,10 +97,10 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
         Toast.makeText(this,"Bluetooth encendido",Toast.LENGTH_LONG).show()
     }
 
-    override fun onBluetoothConnected(address: String) {
-        bluetoothManager.conectarDispositivo(address)
-        //Log.i("Exito","COnectado")
+    override fun onBluetoothConnected(address: String,selectedDevice: PairedDevicesInfo) {
+        bluetoothManager.conectarDispositivo(address,selectedDevice)
     }
+
     override fun enviarComandoBluetooth(comando: String) {
         bluetoothManager.enviarComando(comando)
         Log.i("Comannd","Enviado")
@@ -120,8 +122,10 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
             runOnUiThread {
                 Toast.makeText(this, "Conexión exitosa", Toast.LENGTH_SHORT).show()
             }
+
         }
         bluetoothStateListener?.onBluetoothStateChanged(state)
+
     }
 
     override fun onBluetoothStateChanged(state: Boolean) {
@@ -130,7 +134,6 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
     fun setBluetoothStateListener(listener: BluetoothStateListener) {
         bluetoothStateListener = listener
     }
-
     private fun hideNavigationBar() {
         window.decorView.apply {
             systemUiVisibility = (
@@ -145,5 +148,4 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
         handler.removeCallbacks(hideNavigationBarRunnable)
         handler.postDelayed(hideNavigationBarRunnable, hideNavigationBarDelayMillis)
     }
-
 }

@@ -8,9 +8,16 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
+import android.util.Log
+import androidx.fragment.app.activityViewModels
+import com.example.zacatales.smartrobotapp.bluetooth.model.PairedDevicesInfo
+import com.example.zacatales.smartrobotapp.bluetooth.recyclerview.PairedListAdapter
+import com.example.zacatales.smartrobotapp.bluetooth.viewmodel.DeviceViewModel
 import java.io.IOException
 import java.io.OutputStream
 import java.util.*
+
+
 class BluetoothManager(private val context: Context, private var listener: BluetoothConnectionListener) {
 
     fun setBluetoothStateListener(listener: BluetoothConnectionListener) {
@@ -18,7 +25,7 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
     }
 
     @SuppressLint("MissingPermission")
-    fun conectarDispositivo(address: String) {
+    fun conectarDispositivo(address: String,selectedDevice: PairedDevicesInfo) {
         val device: BluetoothDevice? = bluetoothAdapter?.getRemoteDevice(address)
         var state: Boolean
         state = true
@@ -36,16 +43,17 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
                 outputStream = bluetoothSocket?.outputStream
                 if (outputStream != null) {
                     // La conexión ha sido establecida, realiza operaciones de lectura/escritura aquí
+                    selectedDevice.connect = true
+                    //updateDeviceConnectionState(selectedDevice)
                     listener.State(state)
-                    //connectionListener?.Success()
                 }
             } catch (e: IOException) {
                 val error = "Error: no se pudo conectar al dispositivo"
+                selectedDevice.connect = false
                 listener.onBluetoothConnectionError(error)
             }
         }.start()
     }
-
     fun enviarComando(comando: String) {
         if(bluetoothSocket==null && outputStream==null){
             val error = "Conectese a un dispositivo bluetooth"
@@ -71,7 +79,6 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
             // Ocurrió un error al desconectar el dispositivo
             val error = "Error al desconectar"
             listener.onBluetoothConnectionError(error)
-            //showToast(error)
         }
     }
     companion object {
