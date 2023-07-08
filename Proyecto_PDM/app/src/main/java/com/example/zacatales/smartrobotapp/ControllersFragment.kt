@@ -5,12 +5,16 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,7 +25,12 @@ import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothStateL
 import com.example.zacatales.smartrobotapp.databinding.FragmentControllersBinding
 import com.example.zacatales.smartrobotapp.viewmodel.RobotViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ControllersFragment : Fragment(), BluetoothStateListener {
 
@@ -29,6 +38,11 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
     private lateinit var bluetoothManager: BluetoothManager
     private var bluetoothControlListener: BluetoothConnectionListener? = null
     private lateinit var routeButton: FloatingActionButton
+
+    private lateinit var txtCount: TextView
+    var count: Int = 0;
+    private var scope: CoroutineScope? = null
+
     private val viewModel: RobotViewModel by activityViewModels()
 
     private var buttonPressCount = 0
@@ -173,6 +187,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("F")
                         binding.upActionButton.setBackgroundTintList(modeDark)
@@ -180,6 +195,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton1Pressed = false
                         binding.upActionButton.setBackgroundTintList(ColorDefault)
@@ -190,6 +206,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             } else{
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("F")
                         binding.upActionButton.setBackgroundTintList(pressButton)
@@ -197,6 +214,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         isButton1Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         binding.upActionButton.setBackgroundTintList(ColorDefault)
@@ -207,11 +225,17 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             }
         }
 
+        txtCount = binding.counter
+
         binding.rightActionButton.setOnTouchListener { view, motionEvent ->
+            //startCounter()
+            //count++
+            //txtCount.text = count.toString()
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("R")
                         binding.rightActionButton.setBackgroundTintList(modeDark)
@@ -219,6 +243,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton1Pressed = false
                         binding.rightActionButton.setBackgroundTintList(ColorDefault)
@@ -229,6 +254,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             } else{
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("R")
                         binding.rightActionButton.setBackgroundTintList(pressButton)
@@ -236,6 +262,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         isButton1Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         binding.rightActionButton.setBackgroundTintList(ColorDefault)
@@ -246,11 +273,13 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             }
         }
 
+
         binding.leftActionButton.setOnTouchListener { view, motionEvent ->
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("L")
                         binding.leftActionButton.setBackgroundTintList(modeDark)
@@ -258,6 +287,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardLeft()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton2Pressed = false
                         binding.leftActionButton.setBackgroundTintList(ColorDefault)
@@ -268,6 +298,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             } else{
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("L")
                         binding.leftActionButton.setBackgroundTintList(pressButton)
@@ -275,6 +306,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveForwardLeft()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         isButton2Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         binding.leftActionButton.setBackgroundTintList(ColorDefault)
@@ -290,6 +322,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("B")
                         binding.backActionButton.setBackgroundTintList(modeDark)
@@ -298,6 +331,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveBackwardsRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton2Pressed = false
                         binding.backActionButton.setBackgroundTintList(ColorDefault)
@@ -309,6 +343,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
             } else{
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("B")
                         binding.backActionButton.setBackgroundTintList(pressButton)
@@ -317,6 +352,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         moveBackwardsRight()
                     }
                     MotionEvent.ACTION_UP -> {
+                        stopCounter()
                         isButton2Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         binding.backActionButton.setBackgroundTintList(ColorDefault)
@@ -343,6 +379,12 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                 manejarVelocidad(progress = 0)
             }
         })
+
+       /*txtCount = binding.counter
+        binding.rightActionButton.setOnClickListener {
+            count++
+            txtCount.text = count.toString()
+        }*/
     }
 
     fun moveForwardRight() {
@@ -430,4 +472,32 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
         }
     }
 
+    private fun startCounter() {
+        scope?.cancel() // Cancela el contador anterior si existe
+
+        scope = CoroutineScope(Dispatchers.Main)
+        scope?.launch {
+            var count = 0
+            while (isActive) {
+                delay(10) // Espera 1 segundo
+                updateCounter(count)
+                count++
+            }
+        }
+    }
+
+    private fun stopCounter() {
+        scope?.cancel()
+    }
+
+    private fun updateCounter(count: Int) {
+        txtCount.text = count.toString()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        scope?.cancel() // Cancela el contador cuando se destruye la vista del fragmento
+    }
 }
+
+
