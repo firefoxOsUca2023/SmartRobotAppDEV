@@ -1,0 +1,45 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SmartRobotApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+
+        <item name="android:navigationBarColor">@color/primary</item>
+    </style>
+
+    <style name="Theme.SmartRobotApp" parent="Base.Theme.SmartRobotApp" />
+
+    <style name="backgroundTheme">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="textColor">
+        <item name="android:textColor">@color/txtColor</item>
+    </style>
+
+    <style name="buttonColor">
+        <item name="backgroundTint">@color/btnColor</item>
+    </style>
+
+    <style name="buttonColor2">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+
+
+
+    <style name="seekbarColor">
+        <item name="android:thumbTint">@color/seekBarColor</item>
+        <item name="android:progressTint">@color/seekBarColor</item>
+    </style>
+
+    <style name="cardColor">
+        <item name="cardBackgroundColor">@color/CardDevice</item>
+    </style>
+
+    <style name="centralButton">
+        <item name="android:state_pressed">true</item>
+        <item name="android:color">@color/black</item>
+        <item name="backgroundTint">@color/btnColor</item>
+    </style>
+</resources>

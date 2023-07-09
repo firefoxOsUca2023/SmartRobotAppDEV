@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Smart Robot App</string>
+    <string name="textTitleMain">Sincroniza tu dispositivo y controla tu carro inteligente</string>
+    <string name="textEjem">PUBLICIDAD</string>
+    <string name="actionMoveToControllers">Add movie</string>
+    <string name="actionMoveToBluetooth">Add movie</string>
+    <string name="NameApp">Smart Robot App</string>
+    <string name="textTitleBluetooth">Lista de dispositivos</string>
+    <string name="name_bluetoothDevice">Name</string>
+    <string name="status_device" >Connected </string>
+    <string name="AjustSpeed">Ajusta la velocidad del carrito</string>
+    <string name="Speed">Velocidad Baja</string>
+    <string name="errConecction">Error no se pudo conectar</string>
+    <string name="errrOuput">Error no se pudo obtener outputStream</string>
+    <string name="activityRequired">La actividad debe implementar la interfaz BluetoothControlListener</string>
+    <string name="notSupportBt">El dispositivo no soporta Bluetooth</string>
+    <string name="connectSucessful">Bluetooth conectado con exito</string>
+    <string name="No">No</string>
+    <string name="yes">Si</string>
+    <string name="deleteTour">¿Seguro que deseas eliminar el historial de tu recorrido?</string>
+    <string name="notRout">Sin Recorrido</string>
+
+</resources>

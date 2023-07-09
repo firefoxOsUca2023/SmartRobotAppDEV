@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    tools:context=".ControllersFragment"
+    style="@style/backgroundTheme">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_to_previus_controllerFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nullGap"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/btnColor"
+            android:clickable="true"
+            android:contentDescription="@string/actionMoveToBluetooth"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:background="@color/txtColor"
+            style="@style/buttonColor"
+            app:borderWidth="@dimen/borderWidthBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_to_bluetooth_ControllerFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nullGap"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/btnColor"
+            android:clickable="true"
+            android:contentDescription="@string/actionMoveToBluetooth"
+            android:src="@android:drawable/stat_sys_data_bluetooth"
+            app:background="@color/txtColor"
+            style="@style/buttonColor"
+            app:borderWidth="@dimen/borderWidthBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_to_route_ControllerFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nullGap"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="40dp"
+            android:clickable="true"
+            android:src="@drawable/baseline_map_24"
+            app:background="@color/txtColor"
+            style="@style/buttonColor2"
+            app:borderWidth="@dimen/borderWidthBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/action_to_bluetooth_ControllerFragment" />
+
+        <TextView
+            android:id="@+id/textViewNameAppController"
+            android:layout_width="@dimen/nullGap"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginsGapAppName"
+            android:layout_marginEnd="@dimen/marginsGapAppName"
+            android:layout_marginBottom="@dimen/maxGap"
+            android:gravity="center"
+            android:text="@string/NameApp"
+            style="@style/textColor"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:flow_verticalAlign="bottom"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_gravity="center">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/up_actionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="56dp"
+                                android:background="@color/btnColor"
+                                android:clickable="true"
+                                android:contentDescription="Go forward"
+                                android:src="@drawable/baseline_arrow_up_24"
+                                app:background="@color/txtColor"
+                                style="@style/buttonColor2"
+                                app:borderWidth="@dimen/borderWidthBtn"
+                                app:layout_constraintBottom_toTopOf="@+id/back_actionButton"
+                                app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
+                                app:layout_constraintStart_toEndOf="@+id/left_actionButton"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/left_actionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="75dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginBottom="97dp"
+                                android:background="@color/btnColor"
+                                android:clickable="true"
+                                android:contentDescription="Turn to the left"
+                                android:src="@drawable/baseline_arrow_left_24"
+                                app:background="@color/txtColor"
+                                style="@style/buttonColor2"
+                                app:borderWidth="@dimen/borderWidthBtn"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/up_actionButton"
+                                app:layout_constraintVertical_bias="1.0" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/right_actionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="53dp"
+                                android:layout_marginEnd="125dp"
+                                android:layout_marginBottom="97dp"
+                                android:background="@color/btnColor"
+                                android:clickable="true"
+                                android:contentDescription="Turn to the right"
+                                android:src="@drawable/baseline_arrow_right_24"
+                                app:background="@color/txtColor"
+                                style="@style/buttonColor2"
+                                app:borderWidth="@dimen/borderWidthBtn"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/left_actionButton"
+                                app:layout_constraintTop_toBottomOf="@+id/up_actionButton"
+                                app:layout_constraintVertical_bias="1.0" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/back_actionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:background="@color/btnColor"
+                                android:clickable="true"
+                                android:contentDescription="Turn back"
+                                android:src="@drawable/outline_arrow_down_24"
+                                app:background="@color/txtColor"
+                                style="@style/buttonColor2"
+                                app:borderWidth="@dimen/borderWidthBtn"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
+                                app:layout_constraintStart_toEndOf="@+id/left_actionButton"
+                                app:layout_constraintTop_toBottomOf="@+id/up_actionButton" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="100dp"
+                            android:layout_height="50dp">
+
+                            <TextView
+                                android:id="@+id/counter"
+                                android:layout_width="50dp"
+                                android:layout_height="45dp"
+                                android:text="0"
+                                android:textAlignment="center"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/horn_actionButton"
+                            android:layout_width="231dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:background="@color/btnColor"
+                            android:clickable="true"
+                            android:contentDescription="sonar la bocina"
+                            android:src="@drawable/baseline_campaign_24"
+                            app:background="@color/txtColor"
+                            style="@style/buttonColor2"
+                            app:borderWidth="@dimen/borderWidthBtn" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/lights_actionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="65dp"
+                            android:background="@color/btnColor"
+                            android:clickable="true"
+                            android:contentDescription="Turn on the lights"
+                            android:src="@drawable/baseline_highlight"
+                            app:background="@color/txtColor"
+                            style="@style/buttonColor2"
+                            app:borderWidth="@dimen/borderWidthBtn" />
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textViewVelocity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/Speed"
+                            style="@style/textColor"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewInfoVelocity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="@string/AjustSpeed"
+                            style="@style/textColor"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_height="29dp"
+                            style="@style/seekbarColor"
+                            android:max="100"
+                            android:progress="10"/>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
