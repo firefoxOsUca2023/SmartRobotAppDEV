@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -52,7 +53,7 @@
             android:clickable="true"
             android:src="@drawable/baseline_map_24"
             app:background="@color/txtColor"
-            style="@style/buttonColor"
+            style="@style/buttonColor2"
             app:borderWidth="@dimen/borderWidthBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/action_to_bluetooth_ControllerFragment" />
@@ -109,7 +110,7 @@
                                 android:contentDescription="Go forward"
                                 android:src="@drawable/baseline_arrow_up_24"
                                 app:background="@color/txtColor"
-                                style="@style/buttonColor"
+                                style="@style/buttonColor2"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toTopOf="@+id/back_actionButton"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -128,7 +129,7 @@
                                 android:contentDescription="Turn to the left"
                                 android:src="@drawable/baseline_arrow_left_24"
                                 app:background="@color/txtColor"
-                                style="@style/buttonColor"
+                                style="@style/buttonColor2"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -149,7 +150,7 @@
                                 android:contentDescription="Turn to the right"
                                 android:src="@drawable/baseline_arrow_right_24"
                                 app:background="@color/txtColor"
-                                style="@style/buttonColor"
+                                style="@style/buttonColor2"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +168,7 @@
                                 android:contentDescription="Turn back"
                                 android:src="@drawable/outline_arrow_down_24"
                                 app:background="@color/txtColor"
-                                style="@style/buttonColor"
+                                style="@style/buttonColor2"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -228,7 +229,7 @@
                             android:contentDescription="sonar la bocina"
                             android:src="@drawable/baseline_campaign_24"
                             app:background="@color/txtColor"
-                            style="@style/buttonColor"
+                            style="@style/buttonColor2"
                             app:borderWidth="@dimen/borderWidthBtn" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -241,7 +242,7 @@
                             android:contentDescription="Turn on the lights"
                             android:src="@drawable/baseline_highlight"
                             app:background="@color/txtColor"
-                            style="@style/buttonColor"
+                            style="@style/buttonColor2"
                             app:borderWidth="@dimen/borderWidthBtn" />
                     </LinearLayout>
 
