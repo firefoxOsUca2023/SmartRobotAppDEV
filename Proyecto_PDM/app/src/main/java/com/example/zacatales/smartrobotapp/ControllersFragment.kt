@@ -102,6 +102,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
         //val colorStateList2 = ContextCompat.getColorStateList(requireContext(), R.color.btnColor)
         val modeDark = ContextCompat.getColorStateList(requireContext(), R.color.hornPressButton)
         val ColorDefault = ContextCompat.getColorStateList(requireContext(), R.color.white)
+        val ColorPresstLight = ContextCompat.getColorStateList(requireContext(), R.color.btnColor)
 
 
 
@@ -126,10 +127,10 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                 if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
                     buttonPressCount++
                     if (buttonPressCount == 1) {
-                        binding.lightsActionButton.setBackgroundTintList(modeDark)
+                        binding.lightsActionButton.setBackgroundTintList(ColorDefault)
                         bluetoothControlListener?.enviarComandoBluetooth("X")
                     } else if (buttonPressCount == 2) {
-                        binding.lightsActionButton.setBackgroundTintList(ColorDefault)
+                        binding.lightsActionButton.setBackgroundTintList(modeDark)
                         bluetoothControlListener?.enviarComandoBluetooth("x")
                         buttonPressCount = 0
                     }
@@ -139,7 +140,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         binding.lightsActionButton.setBackgroundTintList(pressButton)
                         bluetoothControlListener?.enviarComandoBluetooth("X")
                     } else if (buttonPressCount2 == 2) {
-                        binding.lightsActionButton.setBackgroundTintList(ColorDefault)
+                        binding.lightsActionButton.setBackgroundTintList(ColorPresstLight)
                         bluetoothControlListener?.enviarComandoBluetooth("x")
                         buttonPressCount2 = 0
                     }
@@ -152,13 +153,13 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
                         // Se presionó el botón
-                        binding.hornActionButton.setBackgroundTintList(modeDark)
+                        binding.hornActionButton.setBackgroundTintList(ColorDefault)
                         bluetoothControlListener?.enviarComandoBluetooth("V")
                     }
 
                     MotionEvent.ACTION_UP -> {
                         // Se soltó el botón
-                        binding.hornActionButton.setBackgroundTintList(ColorDefault)
+                        binding.hornActionButton.setBackgroundTintList(modeDark)
                         bluetoothControlListener?.enviarComandoBluetooth("v")
                     }
                 }
@@ -174,7 +175,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
 
                     MotionEvent.ACTION_UP -> {
                         // Se soltó el botón
-                        binding.hornActionButton.setBackgroundTintList(ColorDefault)
+                        binding.hornActionButton.setBackgroundTintList(ColorPresstLight)
                         bluetoothControlListener?.enviarComandoBluetooth("v")
                     }
                 }
@@ -190,7 +191,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("F")
-                        binding.upActionButton.setBackgroundTintList(modeDark)
+                        binding.upActionButton.setBackgroundTintList(ColorDefault)
                         viewModel.addClick("F")
                         moveForwardRight()
                     }
@@ -198,7 +199,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton1Pressed = false
-                        binding.upActionButton.setBackgroundTintList(ColorDefault)
+                        binding.upActionButton.setBackgroundTintList(modeDark)
                         moveForwardRight()
                     }
                 }
@@ -217,7 +218,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         isButton1Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.upActionButton.setBackgroundTintList(ColorDefault)
+                        binding.upActionButton.setBackgroundTintList(ColorPresstLight)
                         moveForwardRight()
                     }
                 }
@@ -238,7 +239,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         startCounter()
                         isButton1Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("R")
-                        binding.rightActionButton.setBackgroundTintList(modeDark)
+                        binding.rightActionButton.setBackgroundTintList(ColorDefault)
                         viewModel.addClick("R")
                         moveForwardRight()
                     }
@@ -246,7 +247,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton1Pressed = false
-                        binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                        binding.rightActionButton.setBackgroundTintList(modeDark)
                         moveForwardRight()
                     }
                 }
@@ -265,7 +266,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         isButton1Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                        binding.rightActionButton.setBackgroundTintList(ColorPresstLight)
                         moveForwardRight()
                     }
                 }
@@ -282,7 +283,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("L")
-                        binding.leftActionButton.setBackgroundTintList(modeDark)
+                        binding.leftActionButton.setBackgroundTintList(ColorDefault)
                         viewModel.addClick("L")
                         moveForwardLeft()
                     }
@@ -290,7 +291,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton2Pressed = false
-                        binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                        binding.leftActionButton.setBackgroundTintList(modeDark)
                         moveForwardLeft()
                     }
                 }
@@ -309,7 +310,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         isButton2Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                        binding.leftActionButton.setBackgroundTintList(ColorPresstLight)
                         moveForwardLeft()
                     }
                 }
@@ -325,7 +326,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         startCounter()
                         isButton2Pressed = true
                         bluetoothControlListener?.enviarComandoBluetooth("B")
-                        binding.backActionButton.setBackgroundTintList(modeDark)
+                        binding.backActionButton.setBackgroundTintList(ColorDefault)
                         viewModel.addClick("B")
                         moveBackwardsLeft()
                         moveBackwardsRight()
@@ -334,7 +335,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         bluetoothControlListener?.enviarComandoBluetooth("S")
                         isButton2Pressed = false
-                        binding.backActionButton.setBackgroundTintList(ColorDefault)
+                        binding.backActionButton.setBackgroundTintList(modeDark)
                         moveBackwardsLeft()
                         moveBackwardsRight()
                     }
@@ -355,7 +356,7 @@ class ControllersFragment : Fragment(), BluetoothStateListener {
                         stopCounter()
                         isButton2Pressed = false
                         bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.backActionButton.setBackgroundTintList(ColorDefault)
+                        binding.backActionButton.setBackgroundTintList(ColorPresstLight)
                         moveBackwardsLeft()
                         moveBackwardsRight()
                     }

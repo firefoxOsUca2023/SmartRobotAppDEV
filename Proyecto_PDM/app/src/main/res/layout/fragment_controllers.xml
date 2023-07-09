@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    tools:context=".ControllersFragment">
+    tools:context=".ControllersFragment"
+    style="@style/backgroundTheme">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +22,7 @@
             android:contentDescription="@string/actionMoveToBluetooth"
             android:src="@drawable/baseline_arrow_back_24"
             app:background="@color/txtColor"
-            app:backgroundTint="@color/btnColor"
+            style="@style/buttonColor"
             app:borderWidth="@dimen/borderWidthBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -37,7 +38,7 @@
             android:contentDescription="@string/actionMoveToBluetooth"
             android:src="@android:drawable/stat_sys_data_bluetooth"
             app:background="@color/txtColor"
-            app:backgroundTint="@color/btnColor"
+            style="@style/buttonColor"
             app:borderWidth="@dimen/borderWidthBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -51,7 +52,7 @@
             android:clickable="true"
             android:src="@drawable/baseline_map_24"
             app:background="@color/txtColor"
-            style="@style/buttonColor2"
+            style="@style/buttonColor"
             app:borderWidth="@dimen/borderWidthBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/action_to_bluetooth_ControllerFragment" />
@@ -65,7 +66,7 @@
             android:layout_marginBottom="@dimen/maxGap"
             android:gravity="center"
             android:text="@string/NameApp"
-            android:textColor="@color/txtColor"
+            style="@style/textColor"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -108,7 +109,7 @@
                                 android:contentDescription="Go forward"
                                 android:src="@drawable/baseline_arrow_up_24"
                                 app:background="@color/txtColor"
-                                app:backgroundTint="@color/white"
+                                style="@style/buttonColor"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toTopOf="@+id/back_actionButton"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -127,7 +128,7 @@
                                 android:contentDescription="Turn to the left"
                                 android:src="@drawable/baseline_arrow_left_24"
                                 app:background="@color/txtColor"
-                                app:backgroundTint="@color/white"
+                                style="@style/buttonColor"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -148,7 +149,7 @@
                                 android:contentDescription="Turn to the right"
                                 android:src="@drawable/baseline_arrow_right_24"
                                 app:background="@color/txtColor"
-                                app:backgroundTint="@color/white"
+                                style="@style/buttonColor"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -166,7 +167,7 @@
                                 android:contentDescription="Turn back"
                                 android:src="@drawable/outline_arrow_down_24"
                                 app:background="@color/txtColor"
-                                app:backgroundTint="@color/white"
+                                style="@style/buttonColor"
                                 app:borderWidth="@dimen/borderWidthBtn"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/right_actionButton"
@@ -227,7 +228,7 @@
                             android:contentDescription="sonar la bocina"
                             android:src="@drawable/baseline_campaign_24"
                             app:background="@color/txtColor"
-                            app:backgroundTint="@color/white"
+                            style="@style/buttonColor"
                             app:borderWidth="@dimen/borderWidthBtn" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -240,7 +241,7 @@
                             android:contentDescription="Turn on the lights"
                             android:src="@drawable/baseline_highlight"
                             app:background="@color/txtColor"
-                            app:backgroundTint="@color/white"
+                            style="@style/buttonColor"
                             app:borderWidth="@dimen/borderWidthBtn" />
                     </LinearLayout>
 
@@ -272,7 +273,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/Speed"
-                            android:textColor="@color/txtColor"
+                            style="@style/textColor"
                             android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -285,7 +286,7 @@
                             android:layout_marginTop="12dp"
                             android:gravity="center"
                             android:text="@string/AjustSpeed"
-                            android:textColor="@color/txtColor"
+                            style="@style/textColor"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -296,8 +297,7 @@
                             android:layout_width="match_parent"
                             android:layout_margin="20dp"
                             android:layout_height="29dp"
-                            android:thumbTint="#FFDFDF"
-                            android:progressTint="#FFDFDF"
+                            style="@style/seekbarColor"
                             android:max="100"
                             android:progress="10"/>
                     </LinearLayout>
