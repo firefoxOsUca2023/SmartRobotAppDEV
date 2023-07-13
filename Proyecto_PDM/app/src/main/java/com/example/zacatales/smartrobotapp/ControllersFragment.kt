@@ -10,10 +10,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.zacatales.smartrobotapp.bluetooth.DataHolder
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothConnectionListener
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothManager
 import com.example.zacatales.smartrobotapp.databinding.FragmentControllersBinding
@@ -38,6 +41,7 @@ class ControllersFragment : Fragment(){
 
     private var buttonPressCount = 0
     private var buttonPressCount2 = 0
+    val args : ControllersFragmentArgs by navArgs()
 
     var isButton1Pressed = false
     var isButton2Pressed = false
@@ -88,24 +92,10 @@ class ControllersFragment : Fragment(){
         val modeDark = ContextCompat.getColorStateList(requireContext(), R.color.hornPressButton)
         val ColorDefault = ContextCompat.getColorStateList(requireContext(), R.color.white)
 
+        val data = DataHolder.myData
 
-
-        //    int orientation = yourActivityName.this.getResources().getConfiguration().orientation;
-        binding.actionToPreviusControllerFragment.setOnClickListener {
-            activity?.apply {
-                activity?.onBackPressedDispatcher?.onBackPressed()
-            }
-        }
-
-        binding.actionToBluetoothControllerFragment.setOnClickListener {
-
-            activity?.apply {
-                it.findNavController()
-                    .navigate(R.id.action_controllersFragment2_to_bluetoothFragment)
-            }
-        }
-
-
+        if(data){
+            Toast.makeText(context,"SIMON",Toast.LENGTH_LONG).show()
             binding.lightsActionButton.setOnClickListener {
                 val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
@@ -131,249 +121,290 @@ class ControllersFragment : Fragment(){
                 }
             }
 
-        binding.hornActionButton.setOnTouchListener { view, motionEvent ->
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        // Se presionó el botón
-                        binding.hornActionButton.setBackgroundTintList(modeDark)
-                        bluetoothControlListener?.enviarComandoBluetooth("V")
-                    }
+            binding.hornActionButton.setOnTouchListener { view, motionEvent ->
+                val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            // Se presionó el botón
+                            binding.hornActionButton.setBackgroundTintList(modeDark)
+                            bluetoothControlListener?.enviarComandoBluetooth("V")
+                        }
 
-                    MotionEvent.ACTION_UP -> {
-                        // Se soltó el botón
-                        binding.hornActionButton.setBackgroundTintList(ColorDefault)
-                        bluetoothControlListener?.enviarComandoBluetooth("v")
+                        MotionEvent.ACTION_UP -> {
+                            // Se soltó el botón
+                            binding.hornActionButton.setBackgroundTintList(ColorDefault)
+                            bluetoothControlListener?.enviarComandoBluetooth("v")
+                        }
                     }
+                    true
                 }
-                true
+                else{
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            // Se presionó el botón
+                            binding.hornActionButton.setBackgroundTintList(pressButton)
+                            bluetoothControlListener?.enviarComandoBluetooth("V")
+                        }
+
+                        MotionEvent.ACTION_UP -> {
+                            // Se soltó el botón
+                            binding.hornActionButton.setBackgroundTintList(ColorDefault)
+                            bluetoothControlListener?.enviarComandoBluetooth("v")
+                        }
+                    }
+                    true
+                }
             }
-            else{
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        // Se presionó el botón
-                        binding.hornActionButton.setBackgroundTintList(pressButton)
-                        bluetoothControlListener?.enviarComandoBluetooth("V")
-                    }
 
-                    MotionEvent.ACTION_UP -> {
-                        // Se soltó el botón
-                        binding.hornActionButton.setBackgroundTintList(ColorDefault)
-                        bluetoothControlListener?.enviarComandoBluetooth("v")
+            binding.upActionButton.setOnTouchListener { view, motionEvent ->
+                val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton1Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("F")
+                            binding.upActionButton.setBackgroundTintList(modeDark)
+                            viewModel.addClick("F")
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            isButton1Pressed = false
+                            binding.upActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
                     }
+                    true
+                } else{
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton1Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("F")
+                            binding.upActionButton.setBackgroundTintList(pressButton)
+                            viewModel.addClick("F")
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            isButton1Pressed = false
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            binding.upActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
                 }
-                true
+            }
+
+            binding.rightActionButton.setOnTouchListener { view, motionEvent ->
+                val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton1Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("R")
+                            binding.rightActionButton.setBackgroundTintList(modeDark)
+                            viewModel.addClick("R")
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            isButton1Pressed = false
+                            binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                } else{
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton1Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("R")
+                            binding.rightActionButton.setBackgroundTintList(pressButton)
+                            viewModel.addClick("R")
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            isButton1Pressed = false
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                }
+            }
+
+            binding.leftActionButton.setOnTouchListener { view, motionEvent ->
+                val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton2Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("L")
+                            binding.leftActionButton.setBackgroundTintList(modeDark)
+                            viewModel.addClick("L")
+                            moveForwardLeft()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            isButton2Pressed = false
+                            binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardLeft()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                } else{
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton2Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("L")
+                            binding.leftActionButton.setBackgroundTintList(pressButton)
+                            viewModel.addClick("L")
+                            moveForwardLeft()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            isButton2Pressed = false
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                            moveForwardLeft()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                }
+            }
+
+            binding.backActionButton.setOnTouchListener { view, motionEvent ->
+                val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton2Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("B")
+                            binding.backActionButton.setBackgroundTintList(modeDark)
+                            viewModel.addClick("B")
+                            moveBackwardsLeft()
+                            moveBackwardsRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            isButton2Pressed = false
+                            binding.backActionButton.setBackgroundTintList(ColorDefault)
+                            moveBackwardsLeft()
+                            moveBackwardsRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                } else{
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isButton2Pressed = true
+                            bluetoothControlListener?.enviarComandoBluetooth("B")
+                            binding.backActionButton.setBackgroundTintList(pressButton)
+                            viewModel.addClick("B")
+                            moveBackwardsLeft()
+                            moveBackwardsRight()
+                            binding.seekBar.isEnabled = false
+                            startCounter()
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            isButton2Pressed = false
+                            bluetoothControlListener?.enviarComandoBluetooth("S")
+                            binding.backActionButton.setBackgroundTintList(ColorDefault)
+                            moveBackwardsLeft()
+                            moveBackwardsRight()
+                            binding.seekBar.isEnabled = true
+                            stopCounter()
+                        }
+                    }
+                    true
+                }
+            }
+
+            binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    manejarVelocidad(progress)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    // Inicio del seguimiento del SeekBar (cuando se toca)
+                    manejarVelocidad(progress = 10)
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    // Fin del seguimiento del SeekBar (cuando se suelta)
+                    manejarVelocidad(progress = 0)
+                }
+            })
+        }
+        else{
+            binding.actionToRouteControllerFragment.isEnabled = false
+            binding.upActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.backActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.leftActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.rightActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.hornActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.lightsActionButton.setOnClickListener {
+                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+            }
+            binding.seekBar.isEnabled = false
+        }
+
+        //    int orientation = yourActivityName.this.getResources().getConfiguration().orientation;
+        binding.actionToPreviusControllerFragment.setOnClickListener {
+            activity?.apply {
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
         }
 
-        binding.upActionButton.setOnTouchListener { view, motionEvent ->
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton1Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("F")
-                        binding.upActionButton.setBackgroundTintList(modeDark)
-                        viewModel.addClick("F")
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        isButton1Pressed = false
-                        binding.upActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            } else{
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton1Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("F")
-                        binding.upActionButton.setBackgroundTintList(pressButton)
-                        viewModel.addClick("F")
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        isButton1Pressed = false
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.upActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
+        binding.actionToBluetoothControllerFragment.setOnClickListener {
+
+            activity?.apply {
+                it.findNavController()
+                    .navigate(R.id.action_controllersFragment2_to_bluetoothFragment)
             }
         }
 
-        binding.rightActionButton.setOnTouchListener { view, motionEvent ->
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton1Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("R")
-                        binding.rightActionButton.setBackgroundTintList(modeDark)
-                        viewModel.addClick("R")
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        isButton1Pressed = false
-                        binding.rightActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            } else{
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton1Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("R")
-                        binding.rightActionButton.setBackgroundTintList(pressButton)
-                        viewModel.addClick("R")
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        isButton1Pressed = false
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.rightActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            }
-        }
 
-        binding.leftActionButton.setOnTouchListener { view, motionEvent ->
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton2Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("L")
-                        binding.leftActionButton.setBackgroundTintList(modeDark)
-                        viewModel.addClick("L")
-                        moveForwardLeft()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        isButton2Pressed = false
-                        binding.leftActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardLeft()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            } else{
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton2Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("L")
-                        binding.leftActionButton.setBackgroundTintList(pressButton)
-                        viewModel.addClick("L")
-                        moveForwardLeft()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        isButton2Pressed = false
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.leftActionButton.setBackgroundTintList(ColorDefault)
-                        moveForwardLeft()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            }
-        }
 
-        binding.backActionButton.setOnTouchListener { view, motionEvent ->
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton2Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("B")
-                        binding.backActionButton.setBackgroundTintList(modeDark)
-                        viewModel.addClick("B")
-                        moveBackwardsLeft()
-                        moveBackwardsRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        isButton2Pressed = false
-                        binding.backActionButton.setBackgroundTintList(ColorDefault)
-                        moveBackwardsLeft()
-                        moveBackwardsRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            } else{
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        isButton2Pressed = true
-                        bluetoothControlListener?.enviarComandoBluetooth("B")
-                        binding.backActionButton.setBackgroundTintList(pressButton)
-                        viewModel.addClick("B")
-                        moveBackwardsLeft()
-                        moveBackwardsRight()
-                        binding.seekBar.isEnabled = false
-                        startCounter()
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        isButton2Pressed = false
-                        bluetoothControlListener?.enviarComandoBluetooth("S")
-                        binding.backActionButton.setBackgroundTintList(ColorDefault)
-                        moveBackwardsLeft()
-                        moveBackwardsRight()
-                        binding.seekBar.isEnabled = true
-                        stopCounter()
-                    }
-                }
-                true
-            }
-        }
-
-        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                manejarVelocidad(progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // Inicio del seguimiento del SeekBar (cuando se toca)
-                manejarVelocidad(progress = 10)
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                // Fin del seguimiento del SeekBar (cuando se suelta)
-                manejarVelocidad(progress = 0)
-            }
-        })
     }
 
     fun moveForwardRight() {

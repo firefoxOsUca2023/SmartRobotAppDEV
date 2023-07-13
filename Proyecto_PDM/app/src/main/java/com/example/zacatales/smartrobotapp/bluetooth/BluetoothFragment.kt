@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.zacatales.smartrobotapp.ControllersFragmentDirections
 import com.example.zacatales.smartrobotapp.MainActivity
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothConnectionListener
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothManager
@@ -105,10 +107,15 @@ class BluetoothFragment : Fragment(), BluetoothStateListener,BluetoothConnection
             activity?.runOnUiThread {
                 displayDevices()
             }
+
+            //findNavController().navigate(action)
+
         }
         else{
             displayDevices()
         }
+        DataHolder.myData = state
+        //BluetoothFragmentDirections.actionBluetoothFragmentToControllersFragment2(state)
     }
 
     override fun onBluetoothConnected(address: String, selectedDevice: PairedDevicesInfo) {
@@ -124,11 +131,16 @@ class BluetoothFragment : Fragment(), BluetoothStateListener,BluetoothConnection
     override fun onBluetoothDisconnected() {
         //Log.i("a","DESCONECTADO")
         displayDevices()
+        DataHolder.myData = false
     }
     override fun State(state: Boolean) {
     }
 
 
+}
+
+object DataHolder {
+    var myData: Boolean = false
 }
 
 

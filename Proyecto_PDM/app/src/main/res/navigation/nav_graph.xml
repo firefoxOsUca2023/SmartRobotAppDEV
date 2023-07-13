@@ -34,6 +34,11 @@
         android:name="com.example.zacatales.smartrobotapp.ControllersFragment"
         android:label="fragment_controllers"
         tools:layout="@layout/fragment_controllers" >
+        <argument
+            android:name="myArg"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
         <action
             android:id="@+id/action_controllersFragment2_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
