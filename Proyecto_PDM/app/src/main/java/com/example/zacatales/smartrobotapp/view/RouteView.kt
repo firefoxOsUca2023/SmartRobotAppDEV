@@ -6,7 +6,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
+import com.example.zacatales.smartrobotapp.model.BotonPresionado
 
 
 class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
@@ -23,10 +27,39 @@ class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     }
     private val arrowPath = Path()
 
-    private var routeList: List<String> = emptyList()
+    private var scaleFactor = 1f
+    private val gestureDetector: GestureDetector
+    private val scaleGestureDetector: ScaleGestureDetector
 
 
-    fun setRouteList(routeList: List<String>) {
+    private var routeList: List<BotonPresionado> = emptyList()
+
+
+    private var lastTouchX = 0f
+    private var lastTouchY = 0f
+    private var posX = 0f
+    private var posY = 0f
+
+    init {
+        scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                scaleFactor *= detector.scaleFactor
+                scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f))
+                invalidate()
+                return true
+            }
+        })
+
+        gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                scaleFactor = 1f
+                invalidate()
+                return true
+            }
+        })
+    }
+
+    fun setRouteList(routeList: List<BotonPresionado>) {
         this.routeList = routeList
         invalidate() // Vuelve a dibujar la vista cuando cambia la lista de rutas
     }
@@ -39,8 +72,8 @@ class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         var currentX = 0f
         var currentY = 0f
 
-        routeList.forEach { route ->
-            when (route) {
+        routeList.forEach {  buttonPress ->
+            when ( buttonPress.accion) {
                 "F" -> {
                     // Aumentar la altura
                     currentY += 100f
@@ -68,8 +101,12 @@ class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         val calculatedWidth = Math.max(Math.abs(maxX), Math.abs(minX)) * 2
         val calculatedHeight = Math.max(Math.abs(maxY), Math.abs(minY)) * 2
 
-        val width = MeasureSpec.makeMeasureSpec(calculatedWidth.toInt(), MeasureSpec.EXACTLY)
-        val height = MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY)
+        // Establecer dimensiones mínimas
+        val minWidth = 2500 // Establecer a tu valor mínimo preferido
+        val minHeight = 1000 // Establecer a tu valor mínimo preferido
+
+        val width = MeasureSpec.makeMeasureSpec(Math.max(calculatedWidth.toInt(), minWidth), MeasureSpec.EXACTLY)
+        val height = MeasureSpec.makeMeasureSpec(Math.max(calculatedHeight.toInt(), minHeight), MeasureSpec.EXACTLY)
 
         setMeasuredDimension(width, height)
     }
@@ -80,6 +117,11 @@ class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        canvas.save()
+
+        canvas.translate(posX, posY)
+        canvas.scale(scaleFactor, scaleFactor, width / 2f, height / 2f)
+
 
         val width = measuredWidth.toFloat()
         val height = measuredHeight.toFloat()
@@ -87,68 +129,107 @@ class RouteView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         val centerX = width / 2
         val centerY = height / 2
 
-        var currentX = centerX
-        var currentY = centerY
+        canvas.translate(centerX, centerY)
+
+
+        var currentX = 0f
+        var currentY = 0f
 
         // Dibuja un círculo verde en el punto de inicio
         val startCirclePaint = Paint().apply {
             color = Color.GREEN
             style = Paint.Style.FILL
         }
-        canvas.drawCircle(centerX, centerY, 20f, startCirclePaint)
+        canvas.drawCircle(currentX, currentY, 20f, startCirclePaint)
+
 
         routeList.forEach { route ->
-            when (route) {
+            val pressDurationFactor = route.duracion.toFloat() / 10
+            when (route.accion) {
                 "F" -> {
                     // Dibujar flecha hacia arriba
-                    canvas.drawLine(currentX, currentY, currentX, currentY - 100f, pathPaint)
+                    canvas.drawLine(currentX, currentY, currentX, currentY - pressDurationFactor, pathPaint)
                     arrowPath.reset()
-                    arrowPath.moveTo(currentX, currentY - 100f)
-                    arrowPath.lineTo(currentX - 10f, currentY - 80f)
-                    arrowPath.lineTo(currentX + 10f, currentY - 80f)
+                    arrowPath.moveTo(currentX, currentY - pressDurationFactor)
+                    arrowPath.lineTo(currentX - 10f, currentY - (pressDurationFactor - 20f))
+                    arrowPath.lineTo(currentX + 10f, currentY - (pressDurationFactor - 20f))
                     arrowPath.close()
                     canvas.drawPath(arrowPath, arrowPaint)
 
-                    currentY -= 100f
+                    currentY -= pressDurationFactor
                 }
                 "B" -> {
                     // Dibujar flecha hacia abajo
-                    canvas.drawLine(currentX, currentY, currentX, currentY + 100f, pathPaint)
+                    canvas.drawLine(currentX, currentY, currentX, currentY + pressDurationFactor, pathPaint)
                     arrowPath.reset()
-                    arrowPath.moveTo(currentX, currentY + 100f)
-                    arrowPath.lineTo(currentX - 10f, currentY + 80f)
-                    arrowPath.lineTo(currentX + 10f, currentY + 80f)
+                    arrowPath.moveTo(currentX, currentY + pressDurationFactor)
+                    arrowPath.lineTo(currentX - 10f, currentY + (pressDurationFactor - 20f))
+                    arrowPath.lineTo(currentX + 10f, currentY + (pressDurationFactor - 20f))
                     arrowPath.close()
                     canvas.drawPath(arrowPath, arrowPaint)
 
-                    currentY += 100f
+                    currentY += pressDurationFactor
                 }
                 "L" -> {
                     // Dibujar flecha hacia la izquierda
-                    canvas.drawLine(currentX, currentY, currentX - 100f, currentY, pathPaint)
+                    canvas.drawLine(currentX, currentY, currentX - pressDurationFactor, currentY, pathPaint)
                     arrowPath.reset()
-                    arrowPath.moveTo(currentX - 100f, currentY)
-                    arrowPath.lineTo(currentX - 80f, currentY - 10f)
-                    arrowPath.lineTo(currentX - 80f, currentY + 10f)
+                    arrowPath.moveTo(currentX - pressDurationFactor, currentY)
+                    arrowPath.lineTo(currentX - (pressDurationFactor - 20f), currentY - 10f)
+                    arrowPath.lineTo(currentX - (pressDurationFactor - 20f), currentY + 10f)
                     arrowPath.close()
                     canvas.drawPath(arrowPath, arrowPaint)
 
-                    currentX -= 100f
+                    currentX -= pressDurationFactor
                 }
                 "R" -> {
                     // Dibujar flecha hacia la derecha
-                    canvas.drawLine(currentX, currentY, currentX + 100f, currentY, pathPaint)
+                    canvas.drawLine(currentX, currentY, currentX + pressDurationFactor, currentY, pathPaint)
                     arrowPath.reset()
-                    arrowPath.moveTo(currentX + 100f, currentY)
-                    arrowPath.lineTo(currentX + 80f, currentY - 10f)
-                    arrowPath.lineTo(currentX + 80f, currentY + 10f)
+                    arrowPath.moveTo(currentX + pressDurationFactor, currentY)
+                    arrowPath.lineTo(currentX + (pressDurationFactor - 20f), currentY - 10f)
+                    arrowPath.lineTo(currentX + (pressDurationFactor - 20f), currentY + 10f)
                     arrowPath.close()
                     canvas.drawPath(arrowPath, arrowPaint)
 
-                    currentX += 100f
+                    currentX += pressDurationFactor
                 }
             }
         }
+
+        canvas.restore()
+    }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event != null) {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Guardar la posición inicial al tocar la pantalla
+                    lastTouchX = event.x
+                    lastTouchY = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    // Calcula la distancia recorrida
+                    val dx = event.x - lastTouchX
+                    val dy = event.y - lastTouchY
+
+                    // Actualizar la posición
+                    posX += dx
+                    posY += dy
+
+                    // Guarda la posición actual como la última
+                    lastTouchX = event.x
+                    lastTouchY = event.y
+
+                    // Redraw the view
+                    invalidate()
+                }
+            }
+
+            gestureDetector.onTouchEvent(event)
+            scaleGestureDetector.onTouchEvent(event)
+        }
+        return true
     }
 
 }
+

@@ -107,7 +107,6 @@ class BluetoothFragment : Fragment(), BluetoothStateListener,BluetoothConnection
             activity?.runOnUiThread {
                 displayDevices()
             }
-
             //findNavController().navigate(action)
 
         }

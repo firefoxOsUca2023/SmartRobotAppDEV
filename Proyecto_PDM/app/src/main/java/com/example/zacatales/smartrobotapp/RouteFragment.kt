@@ -37,8 +37,10 @@ class RouteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         routeView = view.findViewById(R.id.routeView)
+
         viewModel.clicks.observe(viewLifecycleOwner, { clicks ->
             routeView.setRouteList(clicks)
+
         })
 
         binding.actionToPreviusRouteFragment.setOnClickListener {
@@ -52,9 +54,11 @@ class RouteFragment : Fragment() {
         binding.actionDeleteRoute.setOnClickListener {
             activity?.apply {
                 //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                viewModel.clicks.observe(viewLifecycleOwner,{clicks ->
-                    routeView.clearRoute()
-                })
+                routeView.clearRoute()
+                // Aquí indicamos que se han borrado los datos de RouteView
+                viewModel.setClicksClearedFromRoute()
+                // Limpiamos la lista de clicks en el ViewModel
+                viewModel.clearClicks()
             }
         }
     }

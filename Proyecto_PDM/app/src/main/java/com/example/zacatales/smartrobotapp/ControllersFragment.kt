@@ -20,6 +20,7 @@ import com.example.zacatales.smartrobotapp.bluetooth.DataHolder
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothConnectionListener
 import com.example.zacatales.smartrobotapp.bluetooth.`interface`.BluetoothManager
 import com.example.zacatales.smartrobotapp.databinding.FragmentControllersBinding
+import com.example.zacatales.smartrobotapp.model.BotonPresionado
 import com.example.zacatales.smartrobotapp.viewmodel.RobotViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -33,16 +34,13 @@ import kotlinx.coroutines.launch
 class ControllersFragment : Fragment(){
 
     private lateinit var binding: FragmentControllersBinding
-    private lateinit var bluetoothManager: BluetoothManager
     private var bluetoothControlListener: BluetoothConnectionListener? = null
     private lateinit var routeButton: FloatingActionButton
     private val viewModel: RobotViewModel by activityViewModels()
     private var scope: CoroutineScope? = null
-
+    private var pressStartTime: Long = 0
     private var buttonPressCount = 0
     private var buttonPressCount2 = 0
-    val args : ControllersFragmentArgs by navArgs()
-
     var isButton1Pressed = false
     var isButton2Pressed = false
 
@@ -78,14 +76,11 @@ class ControllersFragment : Fragment(){
         return binding.root
     }
 
-
     @SuppressLint("MissingPermission", "SuspiciousIndentation", "ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         routeButton = binding.actionToRouteControllerFragment
-        routeButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_controllersFragment2_to_routeFragment)
-        }
+
 
         val pressButton = ContextCompat.getColorStateList(requireContext(), R.color.pressColor)
         //val colorStateList2 = ContextCompat.getColorStateList(requireContext(), R.color.btnColor)
@@ -95,6 +90,13 @@ class ControllersFragment : Fragment(){
         val data = DataHolder.myData
 
         if(data){
+            routeButton.setOnClickListener {
+                it.findNavController().navigate(R.id.action_controllersFragment2_to_routeFragment)
+                if(viewModel.isClearedFromRoute.value == true) {
+                    viewModel.clearClicks()
+                }
+            }
+
             binding.lightsActionButton.setOnClickListener {
                 val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
@@ -163,8 +165,8 @@ class ControllersFragment : Fragment(){
                         MotionEvent.ACTION_DOWN -> {
                             isButton1Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("F")
+                            pressStartTime = System.currentTimeMillis()
                             binding.upActionButton.setBackgroundTintList(modeDark)
-                            viewModel.addClick("F")
                             moveForwardRight()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -173,6 +175,9 @@ class ControllersFragment : Fragment(){
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             isButton1Pressed = false
                             binding.upActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("F",pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardRight()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -185,7 +190,7 @@ class ControllersFragment : Fragment(){
                             isButton1Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("F")
                             binding.upActionButton.setBackgroundTintList(pressButton)
-                            viewModel.addClick("F")
+                            pressStartTime = System.currentTimeMillis()
                             moveForwardRight()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -194,6 +199,9 @@ class ControllersFragment : Fragment(){
                             isButton1Pressed = false
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             binding.upActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("F",pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardRight()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -211,7 +219,7 @@ class ControllersFragment : Fragment(){
                             isButton1Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("R")
                             binding.rightActionButton.setBackgroundTintList(modeDark)
-                            viewModel.addClick("R")
+                            pressStartTime = System.currentTimeMillis()
                             moveForwardRight()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -220,6 +228,9 @@ class ControllersFragment : Fragment(){
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             isButton1Pressed = false
                             binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("R", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardRight()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -232,7 +243,7 @@ class ControllersFragment : Fragment(){
                             isButton1Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("R")
                             binding.rightActionButton.setBackgroundTintList(pressButton)
-                            viewModel.addClick("R")
+                            pressStartTime = System.currentTimeMillis()
                             moveForwardRight()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -241,6 +252,9 @@ class ControllersFragment : Fragment(){
                             isButton1Pressed = false
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             binding.rightActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("R", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardRight()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -258,7 +272,7 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("L")
                             binding.leftActionButton.setBackgroundTintList(modeDark)
-                            viewModel.addClick("L")
+                            pressStartTime = System.currentTimeMillis()
                             moveForwardLeft()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -267,6 +281,9 @@ class ControllersFragment : Fragment(){
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             isButton2Pressed = false
                             binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("L", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardLeft()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -279,7 +296,7 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("L")
                             binding.leftActionButton.setBackgroundTintList(pressButton)
-                            viewModel.addClick("L")
+                            pressStartTime = System.currentTimeMillis()
                             moveForwardLeft()
                             binding.seekBar.isEnabled = false
                             startCounter()
@@ -288,6 +305,9 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = false
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             binding.leftActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("L", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveForwardLeft()
                             binding.seekBar.isEnabled = true
                             stopCounter()
@@ -305,7 +325,7 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("B")
                             binding.backActionButton.setBackgroundTintList(modeDark)
-                            viewModel.addClick("B")
+                            pressStartTime = System.currentTimeMillis()
                             moveBackwardsLeft()
                             moveBackwardsRight()
                             binding.seekBar.isEnabled = false
@@ -315,6 +335,9 @@ class ControllersFragment : Fragment(){
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             isButton2Pressed = false
                             binding.backActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("B", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveBackwardsLeft()
                             moveBackwardsRight()
                             binding.seekBar.isEnabled = true
@@ -328,7 +351,7 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = true
                             bluetoothControlListener?.enviarComandoBluetooth("B")
                             binding.backActionButton.setBackgroundTintList(pressButton)
-                            viewModel.addClick("B")
+                            pressStartTime = System.currentTimeMillis()
                             moveBackwardsLeft()
                             moveBackwardsRight()
                             binding.seekBar.isEnabled = false
@@ -338,6 +361,9 @@ class ControllersFragment : Fragment(){
                             isButton2Pressed = false
                             bluetoothControlListener?.enviarComandoBluetooth("S")
                             binding.backActionButton.setBackgroundTintList(ColorDefault)
+                            val pressDuration = System.currentTimeMillis() - pressStartTime
+                            val botonPresionado = BotonPresionado("B", pressDuration)
+                            viewModel.addClick(botonPresionado)
                             moveBackwardsLeft()
                             moveBackwardsRight()
                             binding.seekBar.isEnabled = true
@@ -393,7 +419,6 @@ class ControllersFragment : Fragment(){
                 activity?.onBackPressedDispatcher?.onBackPressed()
             }
         }
-
         binding.actionToBluetoothControllerFragment.setOnClickListener {
 
             activity?.apply {
@@ -401,9 +426,6 @@ class ControllersFragment : Fragment(){
                     .navigate(R.id.action_controllersFragment2_to_bluetoothFragment)
             }
         }
-
-
-
     }
 
     fun moveForwardRight() {
@@ -495,13 +517,12 @@ class ControllersFragment : Fragment(){
             }
         }
     }
-
     private fun stopCounter() {
         scope?.cancel()
     }
 
     private fun updateCounter(count: Int) {
-        binding.counter.text = count.toString()
+        binding.counter.text = ""
     }
 
     override fun onDestroyView() {
