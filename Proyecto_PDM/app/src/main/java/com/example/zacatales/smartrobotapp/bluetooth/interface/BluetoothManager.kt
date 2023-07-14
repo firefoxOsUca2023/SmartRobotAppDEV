@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.activityViewModels
+import com.example.zacatales.smartrobotapp.R
 import com.example.zacatales.smartrobotapp.bluetooth.model.PairedDevicesInfo
 import com.example.zacatales.smartrobotapp.bluetooth.recyclerview.PairedListAdapter
 import com.example.zacatales.smartrobotapp.bluetooth.viewmodel.DeviceViewModel
@@ -48,7 +49,7 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
                     listener.State(state)
                 }
             } catch (e: IOException) {
-                val error = "Error: no se pudo conectar al dispositivo"
+                val error = context.getString(R.string.errorNotConnection)
                 selectedDevice.connect = false
                 listener.onBluetoothConnectionError(error)
             }
@@ -56,17 +57,17 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
     }
     fun enviarComando(comando: String) {
         if(bluetoothSocket==null && outputStream==null){
-            val error = "Conectese a un dispositivo bluetooth"
-            listener.onBluetoothConnectionError(error)
+            //val error = "Conectese a un dispositivo bluetooth"
+            //listener.onBluetoothConnectionError(error)
         }
         else{
             try {
                 outputStream?.write(comando.toByteArray())
                 outputStream?.flush()
             } catch (e: IOException) {
-                val error = "Todavia no se ha conectado a ningún dispostivo"
+                //val error = "Todavia no se ha conectado a ningún dispostivo"
                 //listener.onBluetoothConnectionError(error)
-                listener.onBluetoothConnectionError(error)
+                ///listener.onBluetoothConnectionError(error)
             }
         }
     }
@@ -78,7 +79,7 @@ class BluetoothManager(private val context: Context, private var listener: Bluet
         } catch (e: IOException) {
             // Ocurrió un error al desconectar el dispositivo
             val error = "Error al desconectar"
-            listener.onBluetoothConnectionError(error)
+            //listener.onBluetoothConnectionError(error)
         }
     }
     companion object {

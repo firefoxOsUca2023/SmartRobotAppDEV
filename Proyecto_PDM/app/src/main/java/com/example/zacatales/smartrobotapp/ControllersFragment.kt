@@ -95,7 +95,6 @@ class ControllersFragment : Fragment(){
         val data = DataHolder.myData
 
         if(data){
-            Toast.makeText(context,"SIMON",Toast.LENGTH_LONG).show()
             binding.lightsActionButton.setOnClickListener {
                 val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
@@ -368,22 +367,22 @@ class ControllersFragment : Fragment(){
         else{
             binding.actionToRouteControllerFragment.isEnabled = false
             binding.upActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.backActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.leftActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.rightActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.hornActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.lightsActionButton.setOnClickListener {
-                Toast.makeText(context,"Conectate a un dispositivo bluetooth",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,getString(R.string.connectToBt),Toast.LENGTH_LONG).show()
             }
             binding.seekBar.isEnabled = false
         }

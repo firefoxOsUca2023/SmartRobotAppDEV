@@ -20,4 +20,7 @@
     <string name="deleteTour">Are you sure you want to delete your trip history?</string>
     <string name="textTitleMain">Synchronize your device and control your smart car</string>
     <string name="notRout">No Tour</string>
+    <string name="btOn">Bluetooth on</string>
+    <string name="errorNotConnection">Error: failed to connect to the device</string>
+    <string name="connectToBt">Connect to a bluetooth device</string>
 </resources>

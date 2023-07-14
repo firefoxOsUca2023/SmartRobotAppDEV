@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
         if(bluetoothAdapter==null){
-            Toast.makeText(this,"El dispositivo no soporta Bluetooth",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,getString(R.string.notSupportBt),Toast.LENGTH_LONG).show()
         }
         else{
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
     }
 
     fun can(){
-        Toast.makeText(this,"Bluetooth encendido",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,getString(R.string.btOn),Toast.LENGTH_LONG).show()
     }
 
     override fun onBluetoothConnected(address: String,selectedDevice: PairedDevicesInfo) {
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(),BluetoothConnectionListener,BluetoothSt
     override fun State(state: Boolean) {
         if(state){
             runOnUiThread {
-                Toast.makeText(this, "Conexión exitosa", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.connectSucessful), Toast.LENGTH_SHORT).show()
             }
 
         }

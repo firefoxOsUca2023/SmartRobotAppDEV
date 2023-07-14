@@ -19,5 +19,9 @@
     <string name="yes">Si</string>
     <string name="deleteTour">¿Seguro que deseas eliminar el historial de tu recorrido?</string>
     <string name="notRout">Sin Recorrido</string>
+    <string name="btOn">Bluetooth encendido</string>
+    <string name="errorNotConnection">Error: no se pudo conectar al dispositivo</string>
+    <string name="connectToBt">Conectate a un dispositivo bluetooth</string>
+
 
 </resources>
